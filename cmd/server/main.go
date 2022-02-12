@@ -1,14 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"context"
+	"github.com/kmchary/urlshortner/pkg/http/rest"
 	"github.com/kmchary/urlshortner/pkg/storage/redis"
 	"github.com/kmchary/urlshortner/pkg/urlshortener"
 	"log"
+	"net/http"
 )
 
 func main() {
-	redisRepo, err := redis.NewRedisRepository("localhost:6379")
+	ctx := context.Background()
+	redisRepo, err := redis.NewRedisRepository(ctx, "localhost:6379")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -17,6 +20,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	shortUrl = "localhost:8080/"+shortUrl
-	fmt.Println("short url", shortUrl)
+	shortUrl = "localhost:8080/" + shortUrl
+	r := rest.NewHandler(urlShortener)
+	log.Fatal(http.ListenAndServe("localhost:8080", r))
+
 }
