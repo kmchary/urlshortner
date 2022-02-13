@@ -7,4 +7,5 @@ require (
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.18.1 // indirect
+	github.com/stretchr/testify v1.5.1
 )

@@ -10,6 +10,8 @@ import (
 	"math/big"
 )
 
+var FailedToStoreError = errors.New("failed to store in the cache")
+
 type Service interface {
 	ShortenURL(url string, userId string) (string, error)
 }
@@ -44,7 +46,7 @@ func (s *service) ShortenURL(url string, userId string) (string, error) {
 	shortUrl = base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%d", bigNumber)))
 
 	if err := s.repo.Set(ctx, redisKey, shortUrl); err != nil {
-		return "", errors.New("failed to store in the cache")
+		return "", FailedToStoreError
 	}
 	log.Println("repo.Set shortUrl", shortUrl)
 	return shortUrl, nil
