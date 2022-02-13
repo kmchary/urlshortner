@@ -3,29 +3,28 @@ package rest
 import (
 	"encoding/json"
 	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/chi/middleware"
 	"github.com/kmchary/urlshortner/pkg/urlshortener"
 	"net/http"
 )
 
 type Handler struct {
-	urlService urlshortener.Service
-	router     *chi.Mux
+	UrlService urlshortener.Service
+	Router     *chi.Mux
 }
 
 func NewHandler(us urlshortener.Service) *Handler {
-	r := chi.NewRouter()
+	return &Handler{us, chi.NewRouter()}
+}
+
+func (h *Handler) InitRoutes() {
 
 	// default middlewares provided by chi
-	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
-
-	h := &Handler{us, r}
-	r.Post("/", h.GetShortUrl)
-
-	return h
+	h.Router.Use(middleware.RequestID)
+	h.Router.Use(middleware.RealIP)
+	h.Router.Use(middleware.Logger)
+	h.Router.Use(middleware.Recoverer)
+	h.Router.Post("/", h.GetShortUrl)
 }
 
 func (h *Handler) GetShortUrl(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +38,7 @@ func (h *Handler) GetShortUrl(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		encoder.Encode(urlResponse)
 	}
-	shortUrl, err := h.urlService.ShortenURL(urlRequest.Url, urlRequest.UserId)
+	shortUrl, err := h.UrlService.ShortenURL(urlRequest.Url, urlRequest.UserId)
 	if err != nil {
 		urlResponse.Error = "url service failed to generate short url"
 		w.WriteHeader(http.StatusInternalServerError)

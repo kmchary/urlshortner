@@ -16,12 +16,8 @@ func main() {
 		log.Fatal(err)
 	}
 	urlShortener := urlshortener.NewService(redisRepo)
-	shortUrl, err := urlShortener.ShortenURL("www.google.com/something/something/something/text.htm", "kmchary")
-	if err != nil {
-		log.Fatal(err)
-	}
-	shortUrl = "localhost:8080/" + shortUrl
-	r := rest.NewHandler(urlShortener)
-	log.Fatal(http.ListenAndServe("localhost:8080", r))
+	urlHandler := rest.NewHandler(urlShortener)
+	urlHandler.InitRoutes()
 
+	log.Fatal(http.ListenAndServe("localhost:8081", urlHandler.Router))
 }

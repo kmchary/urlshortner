@@ -2,7 +2,7 @@ package redis
 
 import (
 	"context"
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 	"github.com/kmchary/urlshortner/pkg/urlshortener"
 )
 

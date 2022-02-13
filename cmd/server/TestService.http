@@ -1,0 +1,6 @@
+POST http://localhost:8081/
+Content-Type: application/json
+
+{"Url":"www.google.com/something/something/something/text.htm", "UserId":"kmchary"}
+
+###
