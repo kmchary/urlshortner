@@ -19,5 +19,5 @@ func main() {
 	urlHandler := rest.NewHandler(urlShortener)
 	urlHandler.InitRoutes()
 
-	log.Fatal(http.ListenAndServe("localhost:8081", urlHandler.Router))
+	log.Fatal(http.ListenAndServe("localhost:8080", urlHandler.Router))
 }
