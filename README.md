@@ -1,14 +1,11 @@
 # urlshortner
 Simple URL Shortener Service that stores the short url code in redis. Currently it is not storing the actual url so
 redirecting service and other stuff is not implemented. I am using hexagonal (ports and adapters) architecture to 
-structure the code. It is not production ready code. Actually the logic for generating short url is not so perfect.
-We can do it in multiple ways one of the method is mentioned below:
+structure the code. 
 
-We can get 7 character length random url in base62 
-We could just make a random choice for each character and check if this tiny url exists in DB or not. 
-If it doesn’t exist return the tiny url else continue rolling/retrying.As more and more 7 characters 
-short links are generated in Database, we would require 4 rolls before finding non-existing one 
-short link which will slow down tiny url generation process.
+This will support redirect service as well.
+
+
 
 
 ##How to run
@@ -21,7 +18,10 @@ To run test this service we need to first run redis in docker container using th
 * run the below command 
   * go run main.go
 * post  a request to localhost:8080 with the JSON body as shown below
-  * {"Url":"www.google.com/something/something/something/text.htm", "UserId":"kmchary"}
+  * {"Url":"www.google.com", "UserId":"kmchary"}
+* take the short url code generated, and hit localhost:8080/short_url_code, you will be redirected
+to the actual site
+
 
 ##How to run the app in Docker container
 * clone the repository

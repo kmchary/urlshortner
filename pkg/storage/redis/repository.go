@@ -15,8 +15,17 @@ func (s *Storage) Get(ctx context.Context, key string) string {
 	return value
 }
 
+func (s *Storage) HGetAll(ctx context.Context, key string) map[string]string {
+	value, _ := s.client.HGetAll(ctx, key).Result()
+	return value
+}
+
 func (s *Storage) Set(ctx context.Context, key string, value string) error {
 	return s.client.Set(ctx, key, value, 0).Err()
+}
+
+func (s *Storage) HSet(ctx context.Context, key string, data map[string]interface{}) error {
+	return s.client.HSet(ctx, key, data).Err()
 }
 
 func newRedisClient(ctx context.Context, redisURL string) (*redis.Client, error) {

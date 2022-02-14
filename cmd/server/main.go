@@ -15,6 +15,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	urlShortener := urlshortener.NewService(redisRepo)
 	urlHandler := rest.NewHandler(urlShortener)
 	urlHandler.InitRoutes()
